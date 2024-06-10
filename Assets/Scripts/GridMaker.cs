@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,13 +10,15 @@ public class GridMaker : MonoBehaviour
     [FormerlySerializedAs("NumberOfRows")] public int numberOfRows = 3;
     [FormerlySerializedAs("NumberOfColumns")] public int numberOfColumns = 3;
     [FormerlySerializedAs("GridOffset")] public float gridOffset = 100;
+    protected List<GameObject> Sockets = new List<GameObject>();
+
 
     private void Start()
     {
         GenerateGrid(numberOfRows, numberOfColumns, gridOffset);
     }
     
-    private void GenerateGrid(int rows, int columns, float offset)
+    protected virtual void GenerateGrid(int rows, int columns, float offset)
     {
         var parentRect = GetComponent<RectTransform>().rect;
         var parentWidth = parentRect.width;
@@ -34,6 +37,7 @@ public class GridMaker : MonoBehaviour
             for (var j = 0; j < columns; j++)
             {
                 var newSocket = Instantiate(socketPrefab, transform);
+                Sockets.Add(newSocket);
 
                 var posX = startX + j * (squareSize + offset);
                 var posY = startY - i * (squareSize + offset);
